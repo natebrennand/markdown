@@ -1,17 +1,13 @@
-%{
-    open Blocks
-%}
+%{ open Blocks %}
 
 %token BACKSLASH
-%token HASH1 HASH2 HASH3 HASH4 HASH5 HASH6
-%token DASH
+%token HASH1 HASH2 HASH3 HASH4 HASH5 HASH6 DASH
 %token LBRACKET RBRACKET LPAREN RPAREN PIPE COLON STAR
 
 %token <string> STRING
-
-
 %token EOF
 
+%left HASH1 HASH2 HASH3 HASH4 HASH5 HASH6
 
 
 %start document
@@ -20,11 +16,13 @@
 
 %%
 
-
 document:
   | /* nothing */   { [] }
   | document header { $2 :: $1 }
   | document string { $2 :: $1 }
+
+string:
+  | STRING { String($1) }
 
 header:
   | HASH1 STRING { Header(1, $2) }
@@ -35,9 +33,4 @@ header:
   | HASH6 STRING { Header(6, $2) }
 
 
-string:
-  | STRING { String($1) }
-
-
 %%
-
