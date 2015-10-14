@@ -3,4 +3,7 @@
 *.mli
 parser.ml
 scanner.ml
+
+# executables
 ast
+markdown

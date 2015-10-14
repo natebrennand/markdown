@@ -16,6 +16,7 @@ default: clean markdown ast test
 
 test:
 	./ast < testing/test_headers.md
+	./ast < testing/comment.md
 
 markdown: $(MD_OBJS)
 	$(OCAMLC) $(LIBS) -o markdown $(MD_OBJS)

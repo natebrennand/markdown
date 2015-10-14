@@ -5,15 +5,15 @@ open Blocks
 let block_string = function
   | Header(n, str) -> Format.sprintf "(HEADER %d \"%s\")" n str
   | String(str)    -> Format.sprintf "(STRING \"%s\")" str
+  | Comment(c)     -> Format.sprintf "(COMMENT \"%s\")" c
 
 
 let ast_string document_blocks =
   let document_blocks = List.rev document_blocks in
-    Format.sprintf "(DOCUMENT\n%s)"
+    Format.sprintf "(DOCUMENT\n%s)\n"
       (String.concat "\n"
         (List.map (fun s -> "  " ^ s)
           (List.map block_string document_blocks)))
-
 
 
 let _ =
