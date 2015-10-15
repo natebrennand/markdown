@@ -21,14 +21,15 @@ let _ =
   let ast =
     try
       Parser.document Scanner.token lexbuf
-    with _ ->
+    with e ->
+      let exception_string = Printexc.to_string e in
       let curr = lexbuf.Lexing.lex_curr_p in
       let line = curr.Lexing.pos_lnum in
       let col = curr.Lexing.pos_cnum in
       let tok = Lexing.lexeme lexbuf in
       raise (SyntaxError
-        (Format.sprintf "Syntax error on line %d, col %d, character '%s'"
-          line col tok))
+        (Format.sprintf "Syntax error on line %d, col %d, token '%s': %s"
+          line col tok exception_string))
   in
   print_string (ast_string ast)
 
