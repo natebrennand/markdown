@@ -1,8 +1,7 @@
 { open Parser }
 
 rule token = parse
-| ['\r' '\n'] { token lexbuf }
-| "<!--"      { comment lexbuf }
+| ['\t' '\r' '\n'] { token lexbuf }
 | "#"         { HASH1 }
 | "##"        { HASH2 }
 | "###"       { HASH3 }
@@ -14,12 +13,11 @@ rule token = parse
 | "["         { LBRACKET }
 | "]"         { RBRACKET }
 | ":"         { COLON }
-
-| [^'\n' '#'][^'\n']* as str { STRING(str) }
+| "<"         { START_TAG }
+| ">"         { END_TAG }
+| "<!--"      { COMMENT_START }
+| "-->"       { COMMENT_END }
 | eof         { EOF }
+| [ ' ' 'a'-'z' 'A'-'Z'][^ '\n' '-']* as str { STRING(str |> String.trim) }
 | _ as char   { raise (Failure("illegal character " ^ Char.escaped char)) }
-
-and comment = parse
-| "-->" { token lexbuf }
-| _     { comment lexbuf }
 
