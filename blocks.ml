@@ -1,13 +1,21 @@
 type header = int * string
 
+type paragraph_block =
+  | String of string
+  | Link of string * string
+
+let paragraph_block_string = function
+  | String str       -> str
+  | Link(name, link) -> Format.sprintf "<a href=\"%s\">%s<a>" link name
+
 type block =
   | Header of header
-  | String of string
+  | Paragraph of paragraph_block
   | Comment of string
 
 let block_string = function
   | Header(n, str) -> Format.sprintf "<h%d>%s</h%d>" n str n
-  | String(str)    -> str
+  | Paragraph p    -> paragraph_block_string p
   | Comment(str)   -> Format.sprintf "<!-- %s -->" str
 
 type document = block list

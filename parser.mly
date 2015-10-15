@@ -1,15 +1,21 @@
-%{ open Blocks %}
+%{
+  open Blocks;;
+%}
 
 %token BACKSLASH
 %token <int> HASH
 %token START_TAG END_TAG
 %token COMMENT_START COMMENT_END
 %token LBRACKET RBRACKET LPAREN RPAREN COLON STAR
-%token HASH1 HASH2 HASH3 HASH4 HASH5 HASH6
+%token <string> URL
 
 %token EOF
 
+%token <string> TEXT
 %token <string> STRING
+
+%left LPAREN
+%left LBRACKET
 
 
 
@@ -21,7 +27,7 @@
 document:
   | document comment      { $2 :: $1 }
   | document header       { $2 :: $1 }
-  | document string_block { $2 :: $1 }
+  | document string_block { Paragraph($2) :: $1 }
   | /* nothing */         { [] }
 
 header:
@@ -34,5 +40,6 @@ comment:
 
 string_block:
   | STRING { String $1 }
+  | LBRACKET STRING RBRACKET LPAREN URL RPAREN { Link($2, $5) }
 
 %%
