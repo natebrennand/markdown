@@ -1,7 +1,7 @@
 %{ open Blocks %}
 
 %token BACKSLASH
-%token HASH1 HASH2 HASH3 HASH4 HASH5 HASH6 DASH
+%token <int> HASH
 %token START_TAG END_TAG
 %token COMMENT_START COMMENT_END
 %token LBRACKET RBRACKET LPAREN RPAREN COLON STAR
@@ -25,12 +25,7 @@ document:
   | /* nothing */         { [] }
 
 header:
-  | HASH1 STRING { Header(1, $2) }
-  | HASH2 STRING { Header(2, $2) }
-  | HASH3 STRING { Header(3, $2) }
-  | HASH4 STRING { Header(4, $2) }
-  | HASH5 STRING { Header(5, $2) }
-  | HASH6 STRING { Header(6, $2) }
+  | HASH STRING { Header($1, $2) }
 
 
 comment:
