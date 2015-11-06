@@ -1,6 +1,4 @@
-%{
-  open Blocks;;
-%}
+%{ open Blocks %}
 
 %token BACKSLASH
 %token <int> HASH
@@ -11,10 +9,10 @@
 
 %token EOF
 
-%token <string> TEXT
+%token <string> TEXT LINK
 %token <string> STRING
 
-%left LPAREN
+%left RPAREN
 %left LBRACKET
 
 

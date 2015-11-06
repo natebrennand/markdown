@@ -1,11 +1,16 @@
 exception SyntaxError of string
 open Blocks
 
+let fmt = Format.sprintf
+
+let paragraph_string = function
+  | String s         -> fmt "(STRING \"%s\")" s
+  | Link(name, link) -> fmt "(%s: href=\"%s\")" name link
 
 let block_string = function
-  | Header(n, str) -> Format.sprintf "(HEADER %d \"%s\")" n str
-  | String(str)    -> Format.sprintf "(STRING \"%s\")" str
-  | Comment(c)     -> Format.sprintf "(COMMENT \"%s\")" c
+  | Header(n, str) -> fmt "(HEADER %d \"%s\")" n str
+  | Paragraph p    -> fmt "(PARAGRAPH \"%s\")" (paragraph_string p)
+  | Comment(c)     -> fmt "(COMMENT \"%s\")" c
 
 
 let ast_string document_blocks =
